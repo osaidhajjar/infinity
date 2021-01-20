@@ -21,6 +21,7 @@ class _Level01State extends State<Level01> {
   List<Color> _whatInHotBox = [Colors.grey, Colors.grey, Colors.grey];
   double _width = 0;
   bool _correct = false;
+  bool _isCompact;
 
   List<ColorSpotWidget> _colorsWidgets = [
     ColorSpotWidget(color: Colors.green),
@@ -51,7 +52,7 @@ class _Level01State extends State<Level01> {
 
       if (resultCheck) {
         setState(() {
-          _width = 250;
+          _width = kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
           _correct = true;
         });
 
@@ -64,7 +65,7 @@ class _Level01State extends State<Level01> {
         });
       } else {
         setState(() {
-          _width = 100;
+          _width = kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
           _correct = false;
         });
       }
@@ -78,6 +79,21 @@ class _Level01State extends State<Level01> {
 
   @override
   Widget build(BuildContext context) {
+    _isCompact = !kIsWeb ||
+        (MediaQuery.of(context).size.width /
+                MediaQuery.of(context).devicePixelRatio) <
+            500 / MediaQuery.of(context).devicePixelRatio;
+
+    print("====== width: " + (MediaQuery.of(context).size.width).toString());
+    print("====== width/ratio: " +
+        (MediaQuery.of(context).size.width /
+                MediaQuery.of(context).devicePixelRatio)
+            .toString());
+    print("====== ratio: " +
+        (MediaQuery.of(context).devicePixelRatio).toString());
+
+    print("====== isCompact: " + _isCompact.toString());
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -99,7 +115,11 @@ class _Level01State extends State<Level01> {
                   child: Center(
                       child: Text(widget.mission,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20, color: Colors.black))),
+                          style: TextStyle(
+                              fontSize: kIsWeb
+                                  ? 30 / MediaQuery.of(context).devicePixelRatio
+                                  : 30,
+                              color: Colors.black))),
                 ),
                 Flexible(
                   flex: 20,
@@ -121,213 +141,32 @@ class _Level01State extends State<Level01> {
                 Flexible(
                   flex: 40,
                   fit: FlexFit.loose,
-                  child: Row(mainAxisAlignment: MainAxisAlignment.center,
-
-                      // mainAxisAlignment: MainAxisAlignment.center,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                fit: FlexFit.loose,
-                                child: Stack(
-                                  alignment: Alignment.center,
+                          child: _isCompact
+                              ? coldWidget()
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Image(
-                                          image:
-                                              AssetImage('assets/cold_box.gif'),
-                                          width: 250,
-                                          height: 250),
-                                    ),
-                                    Container(
-                                      width: 200,
-                                      height: 200,
-                                      child: Align(
-                                        alignment: Alignment(0.6, 0.4),
-                                        child: DragTarget<Color>(
-                                            builder: (_, candidateData,
-                                                rejectedData) {
-                                              return Image(
-                                                  image: AssetImage(
-                                                      'assets/spot.png'),
-                                                  color: _whatInColdBox[0],
-                                                  width: 50,
-                                                  height: 50);
-                                            },
-                                            onWillAccept: (data) =>
-                                                _coldColors.contains(data) &&
-                                                        _whatInColdBox[0] ==
-                                                            Colors.grey
-                                                    ? true
-                                                    : false,
-                                            onAccept: (data) {
-                                              _whatInColdBox[0] = data;
-                                              _checkResults();
-                                            }),
-                                      ),
-                                    ),
-                                    Container(
-                                        width: 250,
-                                        height: 250,
-                                        child: Align(
-                                          alignment: Alignment(-0.6, 0.4),
-                                          child: DragTarget<Color>(builder:
-                                              (_, candidateData, rejectedData) {
-                                            return Image(
-                                                image: AssetImage(
-                                                    'assets/spot.png'),
-                                                color: _whatInColdBox[1],
-                                                width: 50,
-                                                height: 50);
-                                          }, onWillAccept: (data) {
-                                            print(
-                                                _whatInColdBox.contains(data));
-                                            return _coldColors.contains(data) &&
-                                                    _whatInColdBox[1] ==
-                                                        Colors.grey
-                                                ? true
-                                                : false;
-                                          }, onAccept: (data) {
-                                            _whatInColdBox[1] = data;
-                                            _checkResults();
-                                          }),
-                                        )),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: DragTarget<Color>(
-                                          builder:
-                                              (_, candidateData, rejectedData) {
-                                            return Image(
-                                                image: AssetImage(
-                                                    'assets/spot.png'),
-                                                color: _whatInColdBox[2],
-                                                width: 50,
-                                                height: 50);
-                                          },
-                                          onWillAccept: (data) =>
-                                              _coldColors.contains(data) &&
-                                                      _whatInColdBox[2] ==
-                                                          Colors.grey
-                                                  ? true
-                                                  : false,
-                                          onAccept: (data) {
-                                            _whatInColdBox[2] = data;
-                                            _checkResults();
-                                          }),
-                                    )
+                                    coldWidget(),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
                         ),
                         Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                fit: FlexFit.loose,
-                                child: Stack(
-                                  alignment: Alignment.center,
+                          child: _isCompact
+                              ? hotWidget()
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Image(
-                                          image:
-                                              AssetImage('assets/hot_box.gif'),
-                                          width: 250,
-                                          height: 250),
-                                    ),
-                                    Container(
-                                      width: 250,
-                                      height: 250,
-                                      child: Align(
-                                        alignment: Alignment(0.6, 0.4),
-                                        child: DragTarget<Color>(
-                                            builder: (_, candidateData,
-                                                rejectedData) {
-                                              return Image(
-                                                  image: AssetImage(
-                                                      'assets/spot.png'),
-                                                  color: _whatInHotBox[0],
-                                                  width: 50,
-                                                  height: 50);
-                                            },
-                                            onWillAccept: (data) =>
-                                                _hotColors.contains(data) &&
-                                                        _whatInHotBox[0] ==
-                                                            Colors.grey
-                                                    ? true
-                                                    : false,
-                                            onAccept: (data) {
-                                              _whatInHotBox[0] = data;
-                                              _checkResults();
-                                            }),
-                                      ),
-                                    ),
-                                    Container(
-                                        width: 250,
-                                        height: 250,
-                                        child: Align(
-                                          alignment: Alignment(-0.6, 0.4),
-                                          child: DragTarget<Color>(builder:
-                                              (_, candidateData, rejectedData) {
-                                            return Image(
-                                                image: AssetImage(
-                                                    'assets/spot.png'),
-                                                color: _whatInHotBox[1],
-                                                width: 50,
-                                                height: 50);
-                                          }, onWillAccept: (data) {
-                                            print(
-                                                _whatInColdBox.contains(data));
-                                            return _hotColors.contains(data) &&
-                                                    _whatInHotBox[1] ==
-                                                        Colors.grey
-                                                ? true
-                                                : false;
-                                          }, onAccept: (data) {
-                                            _whatInHotBox[1] = data;
-                                            _checkResults();
-                                          }),
-                                        )),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: DragTarget<Color>(
-                                          builder:
-                                              (_, candidateData, rejectedData) {
-                                            return Image(
-                                                image: AssetImage(
-                                                    'assets/spot.png'),
-                                                color: _whatInHotBox[2],
-                                                width: 50,
-                                                height: 50);
-                                          },
-                                          onWillAccept: (data) =>
-                                              _hotColors.contains(data) &&
-                                                      _whatInHotBox[2] ==
-                                                          Colors.grey
-                                                  ? true
-                                                  : false,
-                                          onAccept: (data) {
-                                            _whatInHotBox[2] = data;
-                                            _checkResults();
-                                          }),
-                                    )
+                                    hotWidget(),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
                         ),
                       ]),
                 ),
@@ -345,24 +184,34 @@ class _Level01State extends State<Level01> {
                                 (Route<dynamic> route) => false);
                           },
                           child: Center(
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0))),
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Text(
-                                        'إعادة المحاولة',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
+                            child: Container(
+                                width: kIsWeb
+                                    ? 200 /
+                                        MediaQuery.of(context).devicePixelRatio
+                                    : 200,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(kIsWeb
+                                            ? 20 /
+                                                MediaQuery.of(context)
+                                                    .devicePixelRatio
+                                            : 20.0))),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Text(
+                                      'إعادة المحاولة',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: kIsWeb
+                                              ? 20 /
+                                                  MediaQuery.of(context)
+                                                      .devicePixelRatio
+                                              : 20),
                                     ),
-                                  )),
-                            ),
+                                  ),
+                                )),
                           )),
                 ),
                 Flexible(flex: 20, fit: FlexFit.loose, child: Center()),
@@ -383,5 +232,185 @@ class _Level01State extends State<Level01> {
                     )))
           ],
         )));
+  }
+
+  Widget hotWidget() {
+    double spotSize =
+        kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70;
+
+    double boxSize =
+        kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Image(
+              image: AssetImage('assets/hot_box.gif'),
+              width: boxSize,
+              height: boxSize,
+              fit: BoxFit.scaleDown),
+        ),
+        Container(
+          width: boxSize,
+          height: boxSize,
+          child: Align(
+            alignment: Alignment(0.4, 0.4),
+            child: DragTarget<Color>(
+                builder: (_, candidateData, rejectedData) {
+                  return Image(
+                      image: AssetImage('assets/spot.png'),
+                      color: _whatInHotBox[0],
+                      width: spotSize,
+                      height: spotSize);
+                },
+                onWillAccept: (data) =>
+                    _hotColors.contains(data) && _whatInHotBox[0] == Colors.grey
+                        ? true
+                        : false,
+                onAccept: (data) {
+                  _whatInHotBox[0] = data;
+                  _checkResults();
+                }),
+          ),
+        ),
+        Container(
+            width: boxSize,
+            height: boxSize,
+            child: Align(
+              alignment: Alignment(-0.6, 0.4),
+              child:
+                  DragTarget<Color>(builder: (_, candidateData, rejectedData) {
+                return Image(
+                    image: AssetImage('assets/spot.png'),
+                    color: _whatInHotBox[1],
+                    width: spotSize,
+                    height: spotSize);
+              }, onWillAccept: (data) {
+                print(_whatInColdBox.contains(data));
+                return _hotColors.contains(data) &&
+                        _whatInHotBox[1] == Colors.grey
+                    ? true
+                    : false;
+              }, onAccept: (data) {
+                _whatInHotBox[1] = data;
+                _checkResults();
+              }),
+            )),
+        Container(
+          width: boxSize,
+          height: boxSize,
+          child: Align(
+            alignment: Alignment(0, 0.05),
+            child: DragTarget<Color>(
+                builder: (_, candidateData, rejectedData) {
+                  return Image(
+                      image: AssetImage('assets/spot.png'),
+                      color: _whatInHotBox[2],
+                      width: spotSize,
+                      height: spotSize);
+                },
+                onWillAccept: (data) =>
+                    _hotColors.contains(data) && _whatInHotBox[2] == Colors.grey
+                        ? true
+                        : false,
+                onAccept: (data) {
+                  _whatInHotBox[2] = data;
+                  _checkResults();
+                }),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget coldWidget() {
+    double spotSize =
+        kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70;
+
+    double boxSize =
+        kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Image(
+              image: AssetImage('assets/cold_box.gif'),
+              width: boxSize,
+              height: boxSize),
+        ),
+        Container(
+          width: boxSize,
+          height: boxSize,
+          child: Align(
+            alignment: Alignment(0.4, 0.4),
+            child: DragTarget<Color>(
+                builder: (_, candidateData, rejectedData) {
+                  return Image(
+                      image: AssetImage('assets/spot.png'),
+                      color: _whatInColdBox[0],
+                      width: spotSize,
+                      height: spotSize);
+                },
+                onWillAccept: (data) => _coldColors.contains(data) &&
+                        _whatInColdBox[0] == Colors.grey
+                    ? true
+                    : false,
+                onAccept: (data) {
+                  _whatInColdBox[0] = data;
+                  _checkResults();
+                }),
+          ),
+        ),
+        Container(
+            width: boxSize,
+            height: boxSize,
+            child: Align(
+              alignment: Alignment(-0.6, 0.4),
+              child:
+                  DragTarget<Color>(builder: (_, candidateData, rejectedData) {
+                return Image(
+                    image: AssetImage('assets/spot.png'),
+                    color: _whatInColdBox[1],
+                    width: spotSize,
+                    height: spotSize);
+              }, onWillAccept: (data) {
+                print(_whatInColdBox.contains(data));
+                return _coldColors.contains(data) &&
+                        _whatInColdBox[1] == Colors.grey
+                    ? true
+                    : false;
+              }, onAccept: (data) {
+                _whatInColdBox[1] = data;
+                _checkResults();
+              }),
+            )),
+        Container(
+          width: boxSize,
+          height: boxSize,
+          child: Align(
+            alignment: Alignment(0, 0.05),
+            child: DragTarget<Color>(
+                builder: (_, candidateData, rejectedData) {
+                  return Image(
+                      image: AssetImage('assets/spot.png'),
+                      color: _whatInColdBox[2],
+                      width: spotSize,
+                      height: spotSize);
+                },
+                onWillAccept: (data) => _coldColors.contains(data) &&
+                        _whatInColdBox[2] == Colors.grey
+                    ? true
+                    : false,
+                onAccept: (data) {
+                  _whatInColdBox[2] = data;
+                  _checkResults();
+                }),
+          ),
+        )
+      ],
+    );
   }
 }

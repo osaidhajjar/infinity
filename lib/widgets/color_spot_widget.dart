@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ColorSpotWidget extends StatefulWidget {
   final Color color;
@@ -18,8 +19,8 @@ class _ColorSpotWidgetState extends State<ColorSpotWidget> {
   Widget get baseWidget => Image(
       image: AssetImage('assets/spot.png'),
       color: widget.color,
-      width: 50,
-      height: 50);
+      width: kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70,
+      height: kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70);
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +29,25 @@ class _ColorSpotWidgetState extends State<ColorSpotWidget> {
       children: [
         Image(
             image: AssetImage('assets/floor_target.png'),
-            color: widget.color.withAlpha(50),
-            width: 50,
-            height: 50),
+            color: widget.color.withAlpha(70),
+            width: kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70,
+            height: kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70),
         Draggable<Color>(
           data: widget.color,
-          childWhenDragging: Container(width: 50, height: 50),
+          childWhenDragging: Container(
+              width: kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70,
+              height:
+                  kIsWeb ? 70 / MediaQuery.of(context).devicePixelRatio : 70),
           feedback: baseWidget,
-          child:
-              draggedToTarget ? Container(width: 50, height: 50) : baseWidget,
+          child: draggedToTarget
+              ? Container(
+                  width: kIsWeb
+                      ? 70 / MediaQuery.of(context).devicePixelRatio
+                      : 70,
+                  height: kIsWeb
+                      ? 70 / MediaQuery.of(context).devicePixelRatio
+                      : 70)
+              : baseWidget,
           onDragCompleted: () => setState(() => draggedToTarget = true),
         )
       ],
