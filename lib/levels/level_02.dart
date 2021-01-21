@@ -94,6 +94,7 @@ class _Level02State extends State<Level02> {
                         child: DragTarget<Color>(
                             builder: (_, candidateData, rejectedData) {
                               return Image(
+                                  gaplessPlayback: true,
                                   image: AssetImage('assets/rainbow' +
                                       (selectedColor == Colors.yellow
                                           ? ''
