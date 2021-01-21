@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gamification/app_data.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 class Level01 extends StatefulWidget {
   final String title = "المستوى الأول";
-  final String mission = "ضع بقع الألوان في مكانها الصحيح";
+  final String mission = "هيا لنضع بقع الالوان في مكانها الصحيح";
 
   Level01({Key key}) : super(key: key);
 
@@ -184,34 +185,20 @@ class _Level01State extends State<Level01> {
                                 (Route<dynamic> route) => false);
                           },
                           child: Center(
-                            child: Container(
-                                width: kIsWeb
-                                    ? 200 /
-                                        MediaQuery.of(context).devicePixelRatio
-                                    : 200,
-                                decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(kIsWeb
-                                            ? 20 /
-                                                MediaQuery.of(context)
-                                                    .devicePixelRatio
-                                            : 20.0))),
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Text(
-                                      'إعادة المحاولة',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: kIsWeb
-                                              ? 20 /
-                                                  MediaQuery.of(context)
-                                                      .devicePixelRatio
-                                              : 20),
-                                    ),
-                                  ),
-                                )),
+                            child: Center(
+                              child: Image(
+                                  image: AssetImage('assets/try_again2.png'),
+                                  width: kIsWeb
+                                      ? 170 /
+                                          MediaQuery.of(context)
+                                              .devicePixelRatio
+                                      : 170,
+                                  height: kIsWeb
+                                      ? 70 /
+                                          MediaQuery.of(context)
+                                              .devicePixelRatio
+                                      : 70),
+                            ),
                           )),
                 ),
                 Flexible(flex: 20, fit: FlexFit.loose, child: Center()),

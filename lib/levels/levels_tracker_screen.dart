@@ -39,16 +39,16 @@ class _LevelsTrackerScreenState extends State<LevelsTrackerScreen> {
               children: List<int>.generate(AppData.levels.length - 1, (i) => i)
                   .map((e) {
                 print(e.toString());
-                return e > AppData.currentLevel
+                return e > AppData.currentLevel && false
                     ? Icon(Icons.lock)
                     : Center(
                         child: GestureDetector(
                           onTap: () {
-                            if (e <= AppData.currentLevel)
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AppData.levels[e]));
+                            AppData.currentLevel = e;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AppData.levels[e]));
                           },
                           child: CircleAvatar(
                             radius: 20,
