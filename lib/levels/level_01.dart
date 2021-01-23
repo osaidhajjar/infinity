@@ -85,28 +85,12 @@ class _Level01State extends State<Level01> {
                 MediaQuery.of(context).devicePixelRatio) <
             500 / MediaQuery.of(context).devicePixelRatio;
 
-    print("====== width: " + (MediaQuery.of(context).size.width).toString());
-    print("====== width/ratio: " +
-        (MediaQuery.of(context).size.width /
-                MediaQuery.of(context).devicePixelRatio)
-            .toString());
-    print("====== ratio: " +
-        (MediaQuery.of(context).devicePixelRatio).toString());
-
-    print("====== isCompact: " + _isCompact.toString());
-
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          leading: GestureDetector(
-              onTap: () => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => WelcomeScreen()),
-                  (Route<dynamic> route) => false),
-              child: Icon(Icons.home)),
-        ),
+        appBar: AppData.getAppBar(widget.title, context),
         body: SafeArea(
             child: Stack(
           children: [
+            AppData.getBackgroundWidget(context),
             Column(
               children: [
                 Flexible(flex: 5, fit: FlexFit.loose, child: Center()),
@@ -187,7 +171,7 @@ class _Level01State extends State<Level01> {
                           child: Center(
                             child: Center(
                               child: Image(
-                                  image: AssetImage('assets/try_again2.png'),
+                                  image: AssetImage('assets/try_again.png'),
                                   width: kIsWeb
                                       ? 170 /
                                           MediaQuery.of(context)
@@ -213,9 +197,8 @@ class _Level01State extends State<Level01> {
                     height: _width,
                     duration: Duration(seconds: 1),
                     child: Image(
-                      image: AssetImage(_correct
-                          ? 'assets/star.png'
-                          : 'assets/try_again.png'),
+                      image: AssetImage(
+                          _correct ? 'assets/correct.png' : 'assets/wrong.png'),
                     )))
           ],
         )));
@@ -234,7 +217,7 @@ class _Level01State extends State<Level01> {
         Align(
           alignment: Alignment.center,
           child: Image(
-              image: AssetImage('assets/hot_box.gif'),
+              image: AssetImage('assets/box_hot.gif'),
               width: boxSize,
               height: boxSize,
               fit: BoxFit.scaleDown),
@@ -324,7 +307,7 @@ class _Level01State extends State<Level01> {
         Align(
           alignment: Alignment.center,
           child: Image(
-              image: AssetImage('assets/cold_box.gif'),
+              image: AssetImage('assets/box_cold.gif'),
               width: boxSize,
               height: boxSize),
         ),

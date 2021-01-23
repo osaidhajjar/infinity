@@ -7,30 +7,31 @@ import 'package:gamification/welcome_screen.dart';
 import 'package:gamification/widgets/color_spot_widget.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-class Level02 extends StatefulWidget {
-  final String title = "المستوى الثاني";
-  final String mission = "هيا لنضع لون الطيف الناقص";
+class Level23 extends StatefulWidget {
+  final String title = "المستوى الثالث والعشرون";
+  final String mission = "ما هو اللون الناقص من دائرة الالوان";
 
-  Level02({Key key}) : super(key: key);
+  Level23({Key key}) : super(key: key);
 
   @override
-  _Level02State createState() => _Level02State();
+  _Level23State createState() => _Level23State();
 }
 
-class _Level02State extends State<Level02> {
+class _Level23State extends State<Level23> {
   double _width = 0;
   Color selectedColor = Colors.grey;
   bool _correct = false;
   bool _isCompact;
 
   List<ColorSpotWidget> _colorsWidgets = [
-    ColorSpotWidget(color: Colors.black),
-    ColorSpotWidget(color: Colors.yellow),
-    ColorSpotWidget(color: Colors.brown[200])
+    ColorSpotWidget(color: Colors.brown),
+    ColorSpotWidget(color: Colors.purple),
+    ColorSpotWidget(color: Colors.white),
+    ColorSpotWidget(color: Colors.pink[100])
   ];
 
   void _checkResults() {
-    if (selectedColor == Colors.yellow) {
+    if (selectedColor == Colors.purple) {
       setState(() {
         _width = kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
         _correct = true;
@@ -89,11 +90,11 @@ class _Level02State extends State<Level02> {
                             builder: (_, candidateData, rejectedData) {
                               return Image(
                                   gaplessPlayback: true,
-                                  image: AssetImage('assets/rainbow' +
-                                      (selectedColor == Colors.yellow
+                                  image: AssetImage('assets/pie' +
+                                      (selectedColor == Colors.green
                                           ? ''
-                                          : '_missing') +
-                                      '.png'),
+                                          : '_missing_purple') +
+                                      '.gif'),
                                   width: kIsWeb
                                       ? 400 /
                                           MediaQuery.of(context)
@@ -106,7 +107,7 @@ class _Level02State extends State<Level02> {
                                       : 300);
                             },
                             onWillAccept: (data) =>
-                                data == Colors.yellow ? true : false,
+                                data == Colors.purple ? true : false,
                             onAccept: (data) {
                               selectedColor = data;
                               _checkResults();

@@ -12,6 +12,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "لعبة تحدي الألوان",
       theme: ThemeData(fontFamily: 'tajawal'),
       builder: (context, child) {
         return MediaQuery(

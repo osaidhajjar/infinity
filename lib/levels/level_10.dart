@@ -4,33 +4,27 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gamification/app_data.dart';
 import 'package:gamification/welcome_screen.dart';
-import 'package:gamification/widgets/color_spot_widget.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-class Level02 extends StatefulWidget {
-  final String title = "المستوى الثاني";
-  final String mission = "هيا لنضع لون الطيف الناقص";
+class Level10 extends StatefulWidget {
+  final String title = "المستوى العاشر";
+  final String mission = "ساعدني في اختيار اللون البنفسجي الأكثر وضوحا";
 
-  Level02({Key key}) : super(key: key);
+  Level10({Key key}) : super(key: key);
 
   @override
-  _Level02State createState() => _Level02State();
+  _Level10State createState() => _Level10State();
 }
 
-class _Level02State extends State<Level02> {
+class _Level10State extends State<Level10> {
   double _width = 0;
-  Color selectedColor = Colors.grey;
   bool _correct = false;
   bool _isCompact;
 
-  List<ColorSpotWidget> _colorsWidgets = [
-    ColorSpotWidget(color: Colors.black),
-    ColorSpotWidget(color: Colors.yellow),
-    ColorSpotWidget(color: Colors.brown[200])
-  ];
+  List<Widget> _colorsWidgets;
 
-  void _checkResults() {
-    if (selectedColor == Colors.yellow) {
+  void _checkResults(bool correct) {
+    if (correct) {
       setState(() {
         _width = kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
         _correct = true;
@@ -43,12 +37,50 @@ class _Level02State extends State<Level02> {
                 builder: (context) => AppData.levels[AppData.currentLevel]),
             (Route<dynamic> route) => false);
       });
+    } else {
+      setState(() {
+        _width = kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
+        _correct = false;
+      });
+
+      Timer(Duration(seconds: 2), () {
+        setState(() {
+          _width = 0;
+        });
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
+
+    _colorsWidgets = [
+      GestureDetector(
+        onTap: () => _checkResults(false),
+        child: Image(
+          image: AssetImage('assets/clear_purple1.jpg'),
+        ),
+      ),
+      GestureDetector(
+        onTap: () => _checkResults(true),
+        child: Image(
+          image: AssetImage('assets/clear_purple2.jpg'),
+        ),
+      ),
+      GestureDetector(
+        onTap: () => _checkResults(false),
+        child: Image(
+          image: AssetImage('assets/clear_purple3.jpg'),
+        ),
+      ),
+      GestureDetector(
+        onTap: () => _checkResults(false),
+        child: Image(
+          image: AssetImage('assets/clear_purple4.jpg'),
+        ),
+      ),
+    ];
   }
 
   @override
@@ -82,36 +114,6 @@ class _Level02State extends State<Level02> {
 
                 // Flexible(flex: 10, fit: FlexFit.loose, child: Center()),
                 Flexible(
-                    flex: 40,
-                    fit: FlexFit.loose,
-                    child: Center(
-                        child: DragTarget<Color>(
-                            builder: (_, candidateData, rejectedData) {
-                              return Image(
-                                  gaplessPlayback: true,
-                                  image: AssetImage('assets/rainbow' +
-                                      (selectedColor == Colors.yellow
-                                          ? ''
-                                          : '_missing') +
-                                      '.png'),
-                                  width: kIsWeb
-                                      ? 400 /
-                                          MediaQuery.of(context)
-                                              .devicePixelRatio
-                                      : 400,
-                                  height: kIsWeb
-                                      ? 300 /
-                                          MediaQuery.of(context)
-                                              .devicePixelRatio
-                                      : 300);
-                            },
-                            onWillAccept: (data) =>
-                                data == Colors.yellow ? true : false,
-                            onAccept: (data) {
-                              selectedColor = data;
-                              _checkResults();
-                            }))),
-                Flexible(
                   flex: 20,
                   fit: FlexFit.tight,
                   child: Row(
@@ -127,7 +129,7 @@ class _Level02State extends State<Level02> {
                               ))
                           .toList()),
                 ),
-                Flexible(flex: 35, fit: FlexFit.loose, child: Center()),
+                Flexible(flex: 75, fit: FlexFit.loose, child: Center()),
               ],
             ),
             _correct
@@ -138,10 +140,20 @@ class _Level02State extends State<Level02> {
                     width: _width,
                     height: _width,
                     duration: Duration(seconds: 1),
-                    child: Image(
-                      image: AssetImage(
-                          _correct ? 'assets/correct.png' : 'assets/wrong.png'),
-                    )))
+                    child: _correct
+                        ? Container(
+                            color: Colors.purple,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.all(AppData.getSize(20, context)),
+                              child: Image(
+                                image: AssetImage('assets/trophy2.gif'),
+                              ),
+                            ),
+                          )
+                        : Image(
+                            image: AssetImage('assets/wrong.png'),
+                          )))
           ],
         )));
   }

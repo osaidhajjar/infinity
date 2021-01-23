@@ -4,33 +4,28 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gamification/app_data.dart';
 import 'package:gamification/welcome_screen.dart';
-import 'package:gamification/widgets/color_spot_widget.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-class Level02 extends StatefulWidget {
-  final String title = "المستوى الثاني";
-  final String mission = "هيا لنضع لون الطيف الناقص";
+class Level08 extends StatefulWidget {
+  final String title = "المستوى الثامن";
+  final String mission = "أي من الألوان يمثل اللون الأحمر النقي ؟";
 
-  Level02({Key key}) : super(key: key);
+  Level08({Key key}) : super(key: key);
 
   @override
-  _Level02State createState() => _Level02State();
+  _Level08State createState() => _Level08State();
 }
 
-class _Level02State extends State<Level02> {
+class _Level08State extends State<Level08> {
   double _width = 0;
   Color selectedColor = Colors.grey;
   bool _correct = false;
   bool _isCompact;
 
-  List<ColorSpotWidget> _colorsWidgets = [
-    ColorSpotWidget(color: Colors.black),
-    ColorSpotWidget(color: Colors.yellow),
-    ColorSpotWidget(color: Colors.brown[200])
-  ];
+  List<Widget> _colorsWidgets;
 
-  void _checkResults() {
-    if (selectedColor == Colors.yellow) {
+  void _checkResults(bool correct) {
+    if (correct) {
       setState(() {
         _width = kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
         _correct = true;
@@ -43,6 +38,17 @@ class _Level02State extends State<Level02> {
                 builder: (context) => AppData.levels[AppData.currentLevel]),
             (Route<dynamic> route) => false);
       });
+    } else {
+      setState(() {
+        _width = kIsWeb ? 300 / MediaQuery.of(context).devicePixelRatio : 300;
+        _correct = false;
+      });
+
+      Timer(Duration(seconds: 2), () {
+        setState(() {
+          _width = 0;
+        });
+      });
     }
   }
 
@@ -53,6 +59,29 @@ class _Level02State extends State<Level02> {
 
   @override
   Widget build(BuildContext context) {
+    _colorsWidgets = [
+      GestureDetector(
+        onTap: () => _checkResults(true),
+        child: Image(
+          image: AssetImage('assets/box_red.png'),
+          width: AppData.getSize(150, context),
+        ),
+      ),
+      GestureDetector(
+        onTap: () => _checkResults(false),
+        child: Image(
+          image: AssetImage('assets/box_orange.png'),
+          width: AppData.getSize(150, context),
+        ),
+      ),
+      GestureDetector(
+        onTap: () => _checkResults(false),
+        child: Image(
+          image: AssetImage('assets/box_pink.png'),
+          width: AppData.getSize(150, context),
+        ),
+      ),
+    ];
     _isCompact = !kIsWeb ||
         (MediaQuery.of(context).size.width /
                 MediaQuery.of(context).devicePixelRatio) <
@@ -82,37 +111,7 @@ class _Level02State extends State<Level02> {
 
                 // Flexible(flex: 10, fit: FlexFit.loose, child: Center()),
                 Flexible(
-                    flex: 40,
-                    fit: FlexFit.loose,
-                    child: Center(
-                        child: DragTarget<Color>(
-                            builder: (_, candidateData, rejectedData) {
-                              return Image(
-                                  gaplessPlayback: true,
-                                  image: AssetImage('assets/rainbow' +
-                                      (selectedColor == Colors.yellow
-                                          ? ''
-                                          : '_missing') +
-                                      '.png'),
-                                  width: kIsWeb
-                                      ? 400 /
-                                          MediaQuery.of(context)
-                                              .devicePixelRatio
-                                      : 400,
-                                  height: kIsWeb
-                                      ? 300 /
-                                          MediaQuery.of(context)
-                                              .devicePixelRatio
-                                      : 300);
-                            },
-                            onWillAccept: (data) =>
-                                data == Colors.yellow ? true : false,
-                            onAccept: (data) {
-                              selectedColor = data;
-                              _checkResults();
-                            }))),
-                Flexible(
-                  flex: 20,
+                  flex: 40,
                   fit: FlexFit.tight,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,13 +120,17 @@ class _Level02State extends State<Level02> {
                                 flex: 10,
                                 fit: FlexFit.loose,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.all(kIsWeb
+                                      ? 30 /
+                                          MediaQuery.of(context)
+                                              .devicePixelRatio
+                                      : 30),
                                   child: cSpot,
                                 ),
                               ))
                           .toList()),
                 ),
-                Flexible(flex: 35, fit: FlexFit.loose, child: Center()),
+                Flexible(flex: 55, fit: FlexFit.loose, child: Center()),
               ],
             ),
             _correct

@@ -39,6 +39,8 @@ class _Level03State extends State<Level03> {
             _purpleController.text.trim() == "موفي" ||
             _purpleController.text.trim() == "موفى") &&
         (_greyController.text.trim() == "رصاصي" ||
+            _greyController.text.trim() == "رمادي" ||
+            _greyController.text.trim() == "رمادى" ||
             _greyController.text.trim() == "رصاصى" ||
             _greyController.text.trim() == "رصاص")) {
       setState(() {
@@ -72,17 +74,11 @@ class _Level03State extends State<Level03> {
             500 / MediaQuery.of(context).devicePixelRatio;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          leading: GestureDetector(
-              onTap: () => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => WelcomeScreen()),
-                  (Route<dynamic> route) => false),
-              child: Icon(Icons.home)),
-        ),
+        appBar: AppData.getAppBar(widget.title, context),
         body: SafeArea(
             child: Stack(
           children: [
+            AppData.getBackgroundWidget(context),
             Column(
               children: [
                 Flexible(flex: 5, fit: FlexFit.loose, child: Center()),
@@ -107,86 +103,115 @@ class _Level03State extends State<Level03> {
                         Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
-                          child: Column(
-                            children: [
-                              Image(
-                                  image: AssetImage('assets/purple_pin.png'),
-                                  width: pinWidth,
-                                  height: pinWidth),
-                              Container(
-                                width: pinWidth,
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: _purpleController,
-                                  onChanged: (value) => _checkResults(),
-                                  style: TextStyle(
-                                      fontSize: kIsWeb
-                                          ? 25 /
-                                              MediaQuery.of(context)
-                                                  .devicePixelRatio
-                                          : 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration.collapsed(
-                                    hintText: 'اكتب اسم اللون هنا',
-                                    hintStyle: TextStyle(
-                                        color: Colors.grey.shade400,
-                                        fontSize: kIsWeb
-                                            ? 18 /
-                                                MediaQuery.of(context)
-                                                    .devicePixelRatio
-                                            : 18,
-                                        fontWeight: FontWeight.w500),
-                                    border: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.blue)),
-                                  ),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.all(AppData.getSize(20, context)),
+                            child: Column(
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  fit: FlexFit.loose,
+                                  child: Image(
+                                      image:
+                                          AssetImage('assets/pen_purple.png'),
+                                      width: pinWidth,
+                                      height: pinWidth),
                                 ),
-                              )
-                            ],
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.loose,
+                                  child: Container(
+                                    width: pinWidth,
+                                    height: AppData.getSize(50, context),
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: _purpleController,
+                                      onChanged: (value) => _checkResults(),
+                                      style: TextStyle(
+                                          fontSize: kIsWeb
+                                              ? 25 /
+                                                  MediaQuery.of(context)
+                                                      .devicePixelRatio
+                                              : 25,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      decoration: InputDecoration.collapsed(
+                                        hintText: 'اكتب اسم اللون هنا',
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey.shade400,
+                                            height: 2,
+                                            fontSize: kIsWeb
+                                                ? 18 /
+                                                    MediaQuery.of(context)
+                                                        .devicePixelRatio
+                                                : 18,
+                                            fontWeight: FontWeight.w500),
+                                        border: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.blue)),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        Flexible(flex: 1, fit: FlexFit.loose, child: Center()),
+                        // Flexible(flex: 1, fit: FlexFit.loose, child: Center()),
                         Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
-                          child: Column(
-                            children: [
-                              Image(
-                                  image: AssetImage('assets/yellow_pin.png'),
-                                  width: pinWidth,
-                                  height: pinWidth),
-                              Container(
-                                width: pinWidth,
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: _yellowController,
-                                  onChanged: (value) => _checkResults(),
-                                  style: TextStyle(
-                                      fontSize: kIsWeb
-                                          ? 25 /
-                                              MediaQuery.of(context)
-                                                  .devicePixelRatio
-                                          : 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration.collapsed(
-                                    hintText: 'اكتب اسم اللون هنا',
-                                    hintStyle: TextStyle(
-                                        color: Colors.grey.shade400,
-                                        fontSize: kIsWeb
-                                            ? 18 /
-                                                MediaQuery.of(context)
-                                                    .devicePixelRatio
-                                            : 18,
-                                        fontWeight: FontWeight.w500),
-                                    border: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.blue)),
-                                  ),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.all(AppData.getSize(20, context)),
+                            child: Column(
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  fit: FlexFit.loose,
+                                  child: Image(
+                                      image:
+                                          AssetImage('assets/pen_yellow.png'),
+                                      width: pinWidth,
+                                      height: pinWidth),
                                 ),
-                              )
-                            ],
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.loose,
+                                  child: Container(
+                                    width: pinWidth,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: _yellowController,
+                                      onChanged: (value) => _checkResults(),
+                                      style: TextStyle(
+                                          fontSize: kIsWeb
+                                              ? 25 /
+                                                  MediaQuery.of(context)
+                                                      .devicePixelRatio
+                                              : 25,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      decoration: InputDecoration.collapsed(
+                                        hintText: 'اكتب اسم اللون هنا',
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey.shade400,
+                                            height: 2,
+                                            fontSize: kIsWeb
+                                                ? 18 /
+                                                    MediaQuery.of(context)
+                                                        .devicePixelRatio
+                                                : 18,
+                                            fontWeight: FontWeight.w500),
+                                        border: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.blue)),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -200,86 +225,111 @@ class _Level03State extends State<Level03> {
                         Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
-                          child: Column(
-                            children: [
-                              Image(
-                                  image: AssetImage('assets/grey_pin.png'),
-                                  width: pinWidth,
-                                  height: pinWidth),
-                              Container(
-                                width: pinWidth,
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: _greyController,
-                                  onChanged: (value) => _checkResults(),
-                                  style: TextStyle(
-                                      fontSize: kIsWeb
-                                          ? 25 /
-                                              MediaQuery.of(context)
-                                                  .devicePixelRatio
-                                          : 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration.collapsed(
-                                    hintText: 'اكتب اسم اللون هنا',
-                                    hintStyle: TextStyle(
-                                        color: Colors.grey.shade400,
-                                        fontSize: kIsWeb
-                                            ? 18 /
-                                                MediaQuery.of(context)
-                                                    .devicePixelRatio
-                                            : 18,
-                                        fontWeight: FontWeight.w500),
-                                    border: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.blue)),
-                                  ),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.all(AppData.getSize(20, context)),
+                            child: Column(
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  fit: FlexFit.loose,
+                                  child: Image(
+                                      image: AssetImage('assets/pen_grey.png'),
+                                      width: pinWidth,
+                                      height: pinWidth),
                                 ),
-                              )
-                            ],
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.loose,
+                                  child: Container(
+                                    width: pinWidth,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: _greyController,
+                                      onChanged: (value) => _checkResults(),
+                                      style: TextStyle(
+                                          fontSize: kIsWeb
+                                              ? 25 /
+                                                  MediaQuery.of(context)
+                                                      .devicePixelRatio
+                                              : 25,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      decoration: InputDecoration.collapsed(
+                                        hintText: 'اكتب اسم اللون هنا',
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey.shade400,
+                                            height: 2,
+                                            fontSize: kIsWeb
+                                                ? 18 /
+                                                    MediaQuery.of(context)
+                                                        .devicePixelRatio
+                                                : 18,
+                                            fontWeight: FontWeight.w500),
+                                        border: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.blue)),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        Flexible(flex: 1, fit: FlexFit.loose, child: Center()),
                         Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
-                          child: Column(
-                            children: [
-                              Image(
-                                  image: AssetImage('assets/red_pin.png'),
-                                  width: pinWidth,
-                                  height: pinWidth),
-                              Container(
-                                width: pinWidth,
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: _redController,
-                                  onChanged: (value) => _checkResults(),
-                                  style: TextStyle(
-                                      fontSize: kIsWeb
-                                          ? 25 /
-                                              MediaQuery.of(context)
-                                                  .devicePixelRatio
-                                          : 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration.collapsed(
-                                    hintText: 'اكتب اسم اللون هنا',
-                                    hintStyle: TextStyle(
-                                        color: Colors.grey.shade400,
-                                        fontSize: kIsWeb
-                                            ? 18 /
-                                                MediaQuery.of(context)
-                                                    .devicePixelRatio
-                                            : 18,
-                                        fontWeight: FontWeight.w500),
-                                    border: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.blue)),
-                                  ),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.all(AppData.getSize(20, context)),
+                            child: Column(
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  fit: FlexFit.loose,
+                                  child: Image(
+                                      image: AssetImage('assets/pen_red.png'),
+                                      width: pinWidth,
+                                      height: pinWidth),
                                 ),
-                              )
-                            ],
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.loose,
+                                  child: Container(
+                                    width: pinWidth,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      controller: _redController,
+                                      onChanged: (value) => _checkResults(),
+                                      style: TextStyle(
+                                          fontSize: kIsWeb
+                                              ? 25 /
+                                                  MediaQuery.of(context)
+                                                      .devicePixelRatio
+                                              : 25,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      decoration: InputDecoration.collapsed(
+                                        hintText: 'اكتب اسم اللون هنا',
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey.shade400,
+                                            height: 2,
+                                            fontSize: kIsWeb
+                                                ? 18 /
+                                                    MediaQuery.of(context)
+                                                        .devicePixelRatio
+                                                : 18,
+                                            fontWeight: FontWeight.w500),
+                                        border: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.blue)),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -296,9 +346,8 @@ class _Level03State extends State<Level03> {
                     height: _width,
                     duration: Duration(seconds: 1),
                     child: Image(
-                      image: AssetImage(_correct
-                          ? 'assets/star.png'
-                          : 'assets/try_again.png'),
+                      image: AssetImage(
+                          _correct ? 'assets/correct.png' : 'assets/wrong.png'),
                     )))
           ],
         )));
